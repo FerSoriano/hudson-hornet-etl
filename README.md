@@ -40,6 +40,18 @@ EDW_TABLE_NAME="dw_suspicious_users"
 
 **Recuerda agregar la información de tu Data Warehouse en el `.env`.**
 
+## Recomendación de entorno virtual 🖥️
+
+Se recomienda crear un entorno virtual con `venv` para instalar las dependencias necesarias:
+
+```sh
+python3 -m venv .venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+Esto asegura que todas las dependencias del proyecto se instalen correctamente y evita conflictos con otras librerías del sistema.
+
 ## Ejecución local con Docker 🐋
 
 1. Clona el repositorio y navega al directorio del proyecto.
