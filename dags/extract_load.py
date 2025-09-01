@@ -58,6 +58,7 @@ ORDER BY COALESCE(a.total_applications,0) DESC;
 
 
 def extract() -> pd.DataFrame:
+    """ Extract data from PostgreSQL """
     postgre = PostgreConnection(config=POSTGRE_CONN)
     postgre.get_conn()
     df = postgre.extract_data(query=QUERY)
@@ -65,7 +66,13 @@ def extract() -> pd.DataFrame:
     return df
 
 
+def transform(df: pd.DataFrame) -> pd.DataFrame:
+    """ Filter the suspicious users """
+    return df[df["total_applications"] > 1].reset_index(drop=True)
+
+
 def load(data: pd.DataFrame) -> None:
+    """ Load data into the Datawarehouse """
     edw_table = EDWConnection(config=EDW_CONN, schema=SCHEMA, table_name=TABLE_NAME)
     edw_table.get_conn()
     edw_table.create_table()
@@ -75,4 +82,5 @@ def load(data: pd.DataFrame) -> None:
 
 def extract_and_load() -> None:
     df = extract()
-    load(data=df)
+    df_filtered = transform(df)
+    load(data=df_filtered)
